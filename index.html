@@ -18,9 +18,7 @@
             --blue: #3498db;
             --gray: #95a5a6;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
@@ -28,55 +26,34 @@
             line-height: 1.5;
         }
 
+        /* Header */
         header {
             background: linear-gradient(135deg, #a31621 0%, #7b1017 100%);
             color: white;
             padding: 2rem 1.5rem;
             text-align: center;
         }
+        header h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+        header p { opacity: 0.85; font-size: 0.95rem; }
 
-        header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.3rem;
-        }
-
-        header p {
-            opacity: 0.85;
-            font-size: 0.95rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
 
         /* Stats bar */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
         .stat-card {
             background: var(--card);
             border-radius: 10px;
-            padding: 1.2rem;
+            padding: 1rem;
             text-align: center;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .stat-card .label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
+        .stat-card .number { font-size: 2rem; font-weight: 700; }
+        .stat-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
 
         /* Filters */
         .filters {
@@ -87,77 +64,129 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.8rem;
             align-items: end;
         }
-
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.25rem;
         }
-
         .filter-group label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .filter-group select,
-        .filter-group input {
-            padding: 0.5rem 0.8rem;
+        .filter-group input[type="date"],
+        .filter-group input[type="text"] {
+            padding: 0.45rem 0.7rem;
             border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             background: white;
-            min-width: 160px;
+            min-width: 140px;
         }
-
-        .filter-group button {
-            padding: 0.5rem 1.2rem;
+        .filter-group input[type="text"] { min-width: 200px; }
+        .btn {
+            padding: 0.45rem 1rem;
             background: var(--blue);
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
-
-        .filter-group button:hover {
-            opacity: 0.9;
+        .btn:hover { opacity: 0.9; }
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
         }
 
-        /* Chart section */
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .tab {
+            padding: 0.7rem 1.3rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active {
+            color: var(--text);
+            border-bottom-color: #a31621;
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* Charts */
         .charts-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
-
         @media (max-width: 768px) {
             .charts-row { grid-template-columns: 1fr; }
         }
-
         .chart-card {
             background: var(--card);
             border-radius: 10px;
             padding: 1.2rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-
         .chart-card h3 {
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin-bottom: 1rem;
             color: var(--text-muted);
         }
+        .chart-card canvas { max-height: 320px; }
 
-        .chart-card canvas {
-            max-height: 320px;
+        /* Agreement matrix */
+        .matrix-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            overflow-x: auto;
         }
+        .matrix-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+        .matrix-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .agreement-table {
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            width: auto;
+        }
+        .agreement-table th, .agreement-table td {
+            padding: 0.35rem 0.5rem;
+            text-align: center;
+            min-width: 42px;
+        }
+        .agreement-table th {
+            font-weight: 700;
+            background: var(--bg);
+        }
+        .agreement-table td { border: 1px solid var(--border); }
 
         /* Vote list */
         .vote-list-header {
@@ -166,196 +195,143 @@
             align-items: center;
             margin-bottom: 1rem;
         }
-
-        .vote-list-header h2 {
-            font-size: 1.3rem;
-        }
-
-        .vote-count-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .vote-list-header h2 { font-size: 1.3rem; }
+        .vote-count-label { color: var(--text-muted); font-size: 0.85rem; }
 
         .vote-card {
             background: var(--card);
             border-radius: 10px;
             padding: 1.2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.15s;
         }
-
-        .vote-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
+        .vote-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 
         .vote-card-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 1rem;
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.6rem;
         }
-
-        .vote-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            flex: 1;
-        }
-
+        .vote-title { font-weight: 600; font-size: 0.9rem; flex: 1; }
         .vote-meta {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.5rem;
             flex-shrink: 0;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
-
         .badge {
-            padding: 0.2rem 0.6rem;
+            padding: 0.15rem 0.5rem;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             white-space: nowrap;
         }
+        .badge-vedtaget { background: #e8f5e9; color: var(--green); }
+        .badge-forkastet { background: #ffebee; color: var(--red); }
+        .badge-type { background: #e3f2fd; color: var(--blue); }
+        .vote-date { font-size: 0.8rem; color: var(--text-muted); }
 
-        .badge-vedtaget {
-            background: #e8f5e9;
-            color: var(--green);
-        }
+        .vote-bar { display: flex; height: 7px; border-radius: 4px; overflow: hidden; background: #eee; }
+        .vote-bar-for { background: var(--green); }
+        .vote-bar-imod { background: var(--red); }
+        .vote-bar-frav { background: #d5d8dc; }
 
-        .badge-forkastet {
-            background: #ffebee;
-            color: var(--red);
-        }
-
-        .badge-type {
-            background: #e3f2fd;
-            color: var(--blue);
-        }
-
-        .vote-date {
-            font-size: 0.8rem;
+        .vote-bar-summary {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.78rem;
+            margin-top: 0.35rem;
             color: var(--text-muted);
         }
+        .vote-bar-summary span { display: flex; align-items: center; gap: 0.25rem; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+        .dot-for { background: var(--green); }
+        .dot-imod { background: var(--red); }
+        .dot-frav { background: #d5d8dc; }
 
-        /* Party votes breakdown */
+        /* Party breakdown */
         .party-breakdown {
             display: none;
-            margin-top: 1rem;
-            padding-top: 1rem;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
             border-top: 1px solid var(--border);
         }
-
-        .party-breakdown.open {
-            display: block;
-        }
-
-        .party-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
+        .party-breakdown.open { display: block; }
+        .party-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
         .party-table th {
             text-align: left;
-            padding: 0.4rem 0.6rem;
+            padding: 0.35rem 0.5rem;
             border-bottom: 2px solid var(--border);
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
         }
-
-        .party-table td {
-            padding: 0.4rem 0.6rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .party-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .party-name {
-            font-weight: 600;
-        }
-
+        .party-table td { padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
+        .party-table tr:last-child td { border-bottom: none; }
+        .party-name { font-weight: 600; }
         .td-for { color: var(--green); font-weight: 600; }
         .td-imod { color: var(--red); font-weight: 600; }
         .td-frav { color: var(--gray); }
 
-        /* Vote bar */
-        .vote-bar {
+        /* Mini party bar in table */
+        .party-bar {
+            display: flex; height: 5px; border-radius: 3px;
+            overflow: hidden; background: #eee; min-width: 60px;
+        }
+
+        /* Pagination */
+        .pagination {
             display: flex;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            background: #eee;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
         }
-
-        .vote-bar-for {
-            background: var(--green);
+        .pagination button {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
         }
-
-        .vote-bar-imod {
-            background: var(--red);
+        .pagination button.active {
+            background: #a31621;
+            color: white;
+            border-color: #a31621;
         }
+        .pagination button:disabled { opacity: 0.4; cursor: default; }
 
-        .vote-bar-frav {
-            background: var(--gray);
-        }
-
-        .vote-bar-summary {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
-            color: var(--text-muted);
-        }
-
-        .vote-bar-summary span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .dot-for { background: var(--green); }
-        .dot-imod { background: var(--red); }
-        .dot-frav { background: var(--gray); }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-muted);
-        }
-
+        .loading { text-align: center; padding: 3rem; color: var(--text-muted); }
         .info-banner {
             background: #fff3cd;
             border: 1px solid #ffc107;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 0.8rem 1rem;
             margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
-
         .info-banner strong { color: #856404; }
-
         footer {
             text-align: center;
             padding: 2rem;
             color: var(--text-muted);
             font-size: 0.8rem;
         }
-
         footer a { color: var(--blue); }
+        @media (max-width: 600px) {
+            .vote-card-top { flex-direction: column; gap: 0.4rem; }
+            .vote-meta { justify-content: flex-start; }
+            .filters { gap: 0.5rem; }
+            .filter-group select,
+            .filter-group input { min-width: 120px; }
+        }
     </style>
 </head>
 <body>
@@ -366,23 +342,27 @@
 
     <div class="container">
         <div class="info-banner" id="infoBanner" style="display:none;">
-            <strong>Bemærk:</strong> Denne side viser eksempeldata. Kør <code>python3 fetch_data.py</code>
-            for at hente rigtige data fra Folketingets API.
+            <strong>Bemærk:</strong> Siden viser eksempeldata.
+            Kør <code>python3 fetch_data.py</code> for at hente rigtige data fra Folketingets API.
         </div>
 
         <!-- Stats -->
-        <div class="stats-bar" id="statsBar">
+        <div class="stats-bar">
             <div class="stat-card">
                 <div class="number" id="statTotal">-</div>
-                <div class="label">Afstemninger i alt</div>
+                <div class="label">Afstemninger</div>
             </div>
             <div class="stat-card">
-                <div class="number" id="statVedtaget" style="color: var(--green)">-</div>
+                <div class="number" id="statVedtaget" style="color:var(--green)">-</div>
                 <div class="label">Vedtaget</div>
             </div>
             <div class="stat-card">
-                <div class="number" id="statForkastet" style="color: var(--red)">-</div>
+                <div class="number" id="statForkastet" style="color:var(--red)">-</div>
                 <div class="label">Forkastet</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statPctVedtaget">-</div>
+                <div class="label">Vedtagelsesrate</div>
             </div>
             <div class="stat-card">
                 <div class="number" id="statPartier">-</div>
@@ -393,10 +373,12 @@
         <!-- Filters -->
         <div class="filters">
             <div class="filter-group">
+                <label>Søg i titel</label>
+                <input type="text" id="filterSearch" placeholder="Fx 'sundhed', 'skat'...">
+            </div>
+            <div class="filter-group">
                 <label>Parti</label>
-                <select id="filterParti">
-                    <option value="">Alle partier</option>
-                </select>
+                <select id="filterParti"><option value="">Alle</option></select>
             </div>
             <div class="filter-group">
                 <label>Resultat</label>
@@ -408,43 +390,74 @@
             </div>
             <div class="filter-group">
                 <label>Type</label>
-                <select id="filterType">
-                    <option value="">Alle typer</option>
-                </select>
+                <select id="filterType"><option value="">Alle</option></select>
             </div>
             <div class="filter-group">
-                <label>Fra dato</label>
+                <label>Fra</label>
                 <input type="date" id="filterFra" value="2022-11-01">
             </div>
             <div class="filter-group">
-                <label>Til dato</label>
+                <label>Til</label>
                 <input type="date" id="filterTil">
             </div>
             <div class="filter-group">
                 <label>&nbsp;</label>
-                <button onclick="applyFilters()">Filtrer</button>
+                <button class="btn" onclick="applyFilters()">Filtrer</button>
+            </div>
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-secondary" onclick="resetFilters()">Nulstil</button>
             </div>
         </div>
 
-        <!-- Charts -->
-        <div class="charts-row">
-            <div class="chart-card">
-                <h3>For-stemmer per parti (%)</h3>
-                <canvas id="chartPartiFor"></canvas>
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Oversigt</div>
+            <div class="tab" data-tab="votes" onclick="switchTab('votes')">Afstemninger</div>
+            <div class="tab" data-tab="agreement" onclick="switchTab('agreement')">Parti-enighed</div>
+        </div>
+
+        <!-- Tab: Overview -->
+        <div class="tab-panel active" id="panel-overview">
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h3>For-stemmer per parti (%)</h3>
+                    <canvas id="chartPartiFor"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Afstemninger over tid</h3>
+                    <canvas id="chartTimeline"></canvas>
+                </div>
             </div>
-            <div class="chart-card">
-                <h3>Afstemninger over tid</h3>
-                <canvas id="chartTimeline"></canvas>
+            <div class="charts-row">
+                <div class="chart-card">
+                    <h3>Stemmefordeling per parti (samlet)</h3>
+                    <canvas id="chartPartiStacked"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Afstemningstyper</h3>
+                    <canvas id="chartTypes"></canvas>
+                </div>
             </div>
         </div>
 
-        <!-- Vote list -->
-        <div class="vote-list-header">
-            <h2>Afstemninger</h2>
-            <span class="vote-count-label" id="voteCountLabel"></span>
+        <!-- Tab: Votes -->
+        <div class="tab-panel" id="panel-votes">
+            <div class="vote-list-header">
+                <h2>Afstemninger</h2>
+                <span class="vote-count-label" id="voteCountLabel"></span>
+            </div>
+            <div id="voteList"><div class="loading">Indlæser data...</div></div>
+            <div class="pagination" id="pagination"></div>
         </div>
-        <div id="voteList">
-            <div class="loading">Indlæser data...</div>
+
+        <!-- Tab: Agreement -->
+        <div class="tab-panel" id="panel-agreement">
+            <div class="matrix-card">
+                <h3>Parti-enighed matrix</h3>
+                <p>Procentdel af afstemninger hvor to partier stemte ens (begge For eller begge Imod). Baseret på filtrerede data.</p>
+                <div id="agreementMatrix"></div>
+            </div>
         </div>
     </div>
 
@@ -456,85 +469,101 @@
     <script>
     let allVotes = [];
     let filteredVotes = [];
+    let currentPage = 1;
+    const PAGE_SIZE = 20;
 
-    // Party colors
+    // Official-ish party colors
     const PARTY_COLORS = {
-        'S':   '#c0392b',
-        'V':   '#2980b9',
-        'M':   '#6c3483',
-        'SF':  '#e74c3c',
-        'DD':  '#16a085',
-        'LA':  '#2ecc71',
-        'KF':  '#27ae60',
-        'EL':  '#e67e22',
-        'DF':  '#f1c40f',
-        'NB':  '#1abc9c',
-        'ALT': '#2ecc71',
-        'RV':  '#9b59b6',
+        'S':   '#b71c1c', // Socialdemokratiet
+        'V':   '#1565c0', // Venstre
+        'M':   '#7b1fa2', // Moderaterne
+        'SF':  '#c62828', // SF
+        'DD':  '#00695c', // Danmarksdemokraterne
+        'LA':  '#1b5e20', // Liberal Alliance
+        'KF':  '#2e7d32', // Det Konservative
+        'EL':  '#e65100', // Enhedslisten
+        'DF':  '#f9a825', // Dansk Folkeparti
+        'NB':  '#00838f', // Nye Borgerlige
+        'ALT': '#558b2f', // Alternativet
+        'RV':  '#6a1b9a', // Radikale Venstre
     };
 
-    function getPartyColor(party) {
-        return PARTY_COLORS[party] || '#95a5a6';
+    // Full party names
+    const PARTY_NAMES = {
+        'S':   'Socialdemokratiet',
+        'V':   'Venstre',
+        'M':   'Moderaterne',
+        'SF':  'Socialistisk Folkeparti',
+        'DD':  'Danmarksdemokraterne',
+        'LA':  'Liberal Alliance',
+        'KF':  'Det Konservative Folkeparti',
+        'EL':  'Enhedslisten',
+        'DF':  'Dansk Folkeparti',
+        'NB':  'Nye Borgerlige',
+        'ALT': 'Alternativet',
+        'RV':  'Radikale Venstre',
+    };
+
+    function getPartyColor(p) { return PARTY_COLORS[p] || '#95a5a6'; }
+    function getPartyName(p) { return PARTY_NAMES[p] || p; }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                  .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    // Load data
+    // --- Load data ---
     async function loadData() {
         try {
             const resp = await fetch('data/afstemninger.json');
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             allVotes = await resp.json();
-
-            // Sort by date descending
-            allVotes.sort((a, b) => (b.dato || '').localeCompare(a.dato || ''));
-
+            allVotes.sort((a,b) => (b.dato||'').localeCompare(a.dato||''));
             filteredVotes = [...allVotes];
             populateFilters();
-            updateStats();
-            renderCharts();
-            renderVoteList();
-
-            // Show info banner if sample data
+            updateAll();
             if (allVotes.length > 0 && allVotes.length <= 15) {
                 document.getElementById('infoBanner').style.display = 'block';
             }
         } catch (err) {
             document.getElementById('voteList').innerHTML =
                 `<div class="loading">Kunne ikke indlæse data: ${err.message}<br>
-                 Kør <code>python3 fetch_data.py</code> først.</div>`;
+                 Kør <code>python3 fetch_data.py</code> for at hente data.</div>`;
         }
     }
 
-    function getAllParties() {
+    function getAllParties(votes) {
+        const src = votes || allVotes;
         const parties = new Set();
-        allVotes.forEach(v => {
-            Object.keys(v.parti_stemmer || {}).forEach(p => parties.add(p));
-        });
+        src.forEach(v => Object.keys(v.parti_stemmer||{}).forEach(p => parties.add(p)));
         return [...parties].sort();
     }
 
     function populateFilters() {
-        const partiSelect = document.getElementById('filterParti');
+        const partiSel = document.getElementById('filterParti');
         getAllParties().forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p;
-            opt.textContent = p;
-            partiSelect.appendChild(opt);
+            const o = document.createElement('option');
+            o.value = p; o.textContent = `${p} - ${getPartyName(p)}`;
+            partiSel.appendChild(o);
         });
-
-        const typeSelect = document.getElementById('filterType');
+        const typeSel = document.getElementById('filterType');
         const types = new Set(allVotes.map(v => v.type).filter(Boolean));
         [...types].sort().forEach(t => {
-            const opt = document.createElement('option');
-            opt.value = t;
-            opt.textContent = t;
-            typeSelect.appendChild(opt);
+            const o = document.createElement('option');
+            o.value = t; o.textContent = t;
+            typeSel.appendChild(o);
         });
+        document.getElementById('filterTil').value = new Date().toISOString().slice(0,10);
 
-        // Default til dato to today
-        document.getElementById('filterTil').value = new Date().toISOString().slice(0, 10);
+        // Enter key triggers filter
+        document.getElementById('filterSearch').addEventListener('keydown', e => {
+            if (e.key === 'Enter') applyFilters();
+        });
     }
 
     function applyFilters() {
+        const search = document.getElementById('filterSearch').value.toLowerCase().trim();
         const parti = document.getElementById('filterParti').value;
         const resultat = document.getElementById('filterResultat').value;
         const type = document.getElementById('filterType').value;
@@ -542,83 +571,95 @@
         const til = document.getElementById('filterTil').value;
 
         filteredVotes = allVotes.filter(v => {
+            if (search) {
+                const title = (v.sag_titel||'').toLowerCase();
+                const konk = (v.konklusion||'').toLowerCase();
+                if (!title.includes(search) && !konk.includes(search)) return false;
+            }
             if (resultat && String(v.vedtaget) !== resultat) return false;
             if (type && v.type !== type) return false;
             if (fra && v.dato < fra) return false;
             if (til && v.dato > til) return false;
-            if (parti) {
-                const ps = v.parti_stemmer || {};
-                if (!ps[parti]) return false;
-            }
+            if (parti && !(v.parti_stemmer||{})[parti]) return false;
             return true;
         });
+        currentPage = 1;
+        updateAll();
+    }
 
+    function resetFilters() {
+        document.getElementById('filterSearch').value = '';
+        document.getElementById('filterParti').value = '';
+        document.getElementById('filterResultat').value = '';
+        document.getElementById('filterType').value = '';
+        document.getElementById('filterFra').value = '2022-11-01';
+        document.getElementById('filterTil').value = new Date().toISOString().slice(0,10);
+        filteredVotes = [...allVotes];
+        currentPage = 1;
+        updateAll();
+    }
+
+    function updateAll() {
         updateStats();
         renderCharts();
         renderVoteList();
+        renderAgreementMatrix();
     }
 
+    // --- Stats ---
     function updateStats() {
-        document.getElementById('statTotal').textContent = filteredVotes.length;
-        document.getElementById('statVedtaget').textContent =
-            filteredVotes.filter(v => v.vedtaget).length;
-        document.getElementById('statForkastet').textContent =
-            filteredVotes.filter(v => !v.vedtaget).length;
-
-        const parties = new Set();
-        filteredVotes.forEach(v => {
-            Object.keys(v.parti_stemmer || {}).forEach(p => parties.add(p));
-        });
-        document.getElementById('statPartier').textContent = parties.size;
+        const total = filteredVotes.length;
+        const vedtaget = filteredVotes.filter(v => v.vedtaget).length;
+        const forkastet = total - vedtaget;
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statVedtaget').textContent = vedtaget;
+        document.getElementById('statForkastet').textContent = forkastet;
+        document.getElementById('statPctVedtaget').textContent =
+            total > 0 ? Math.round((vedtaget/total)*100) + '%' : '-';
+        document.getElementById('statPartier').textContent = getAllParties(filteredVotes).length;
     }
 
-    // Charts
-    let chartPartiFor = null;
-    let chartTimeline = null;
+    // --- Tabs ---
+    function switchTab(name) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab===name));
+        document.querySelectorAll('.tab-panel').forEach(p =>
+            p.classList.toggle('active', p.id === `panel-${name}`)
+        );
+    }
+
+    // --- Charts ---
+    let charts = {};
+    function destroyChart(name) { if (charts[name]) { charts[name].destroy(); delete charts[name]; } }
 
     function renderCharts() {
         renderPartiForChart();
         renderTimelineChart();
+        renderPartiStackedChart();
+        renderTypesChart();
     }
 
     function renderPartiForChart() {
-        const parties = getAllParties();
-        const partiTotals = {};
-        const partiForTotals = {};
-
+        const totals = {}, forTotals = {};
         filteredVotes.forEach(v => {
-            const ps = v.parti_stemmer || {};
-            Object.entries(ps).forEach(([p, counts]) => {
-                if (!partiTotals[p]) { partiTotals[p] = 0; partiForTotals[p] = 0; }
-                partiTotals[p] += (counts.For || 0) + (counts.Imod || 0) +
-                    (counts['Hverken for eller imod'] || 0);
-                partiForTotals[p] += counts.For || 0;
+            Object.entries(v.parti_stemmer||{}).forEach(([p, c]) => {
+                if (!totals[p]) { totals[p]=0; forTotals[p]=0; }
+                totals[p] += (c.For||0) + (c.Imod||0) + (c['Hverken for eller imod']||0);
+                forTotals[p] += c.For||0;
             });
         });
+        const parties = Object.keys(totals).filter(p => totals[p]>0)
+            .sort((a,b) => (forTotals[b]/totals[b]) - (forTotals[a]/totals[a]));
+        const data = parties.map(p => Math.round((forTotals[p]/totals[p])*100));
 
-        const sortedParties = parties
-            .filter(p => partiTotals[p] > 0)
-            .sort((a, b) => {
-                const pctA = (partiForTotals[a] / partiTotals[a]) * 100;
-                const pctB = (partiForTotals[b] / partiTotals[b]) * 100;
-                return pctB - pctA;
-            });
-
-        const data = sortedParties.map(p =>
-            Math.round((partiForTotals[p] / partiTotals[p]) * 100)
-        );
-
-        const ctx = document.getElementById('chartPartiFor').getContext('2d');
-        if (chartPartiFor) chartPartiFor.destroy();
-
-        chartPartiFor = new Chart(ctx, {
+        destroyChart('partiFor');
+        charts.partiFor = new Chart(document.getElementById('chartPartiFor'), {
             type: 'bar',
             data: {
-                labels: sortedParties,
+                labels: parties,
                 datasets: [{
-                    label: 'For-stemmer %',
+                    label: 'For %',
                     data: data,
-                    backgroundColor: sortedParties.map(p => getPartyColor(p)),
+                    backgroundColor: parties.map(getPartyColor),
                     borderRadius: 4,
                 }]
             },
@@ -626,155 +667,289 @@
                 responsive: true,
                 plugins: {
                     legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `${ctx.parsed.y}% for-stemmer`
-                        }
-                    }
+                    tooltip: { callbacks: { label: c => `${c.parsed.y}% for-stemmer (${getPartyName(c.label)})` } }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: { callback: v => v + '%' }
-                    }
+                    y: { beginAtZero: true, max: 100, ticks: { callback: v => v+'%' } }
                 }
             }
         });
     }
 
     function renderTimelineChart() {
-        // Group by month
         const monthly = {};
         filteredVotes.forEach(v => {
             if (!v.dato) return;
-            const month = v.dato.slice(0, 7); // YYYY-MM
-            if (!monthly[month]) monthly[month] = { vedtaget: 0, forkastet: 0 };
-            if (v.vedtaget) monthly[month].vedtaget++;
-            else monthly[month].forkastet++;
+            const m = v.dato.slice(0,7);
+            if (!monthly[m]) monthly[m] = {vedtaget:0, forkastet:0};
+            v.vedtaget ? monthly[m].vedtaget++ : monthly[m].forkastet++;
         });
-
         const months = Object.keys(monthly).sort();
-        const ctx = document.getElementById('chartTimeline').getContext('2d');
-        if (chartTimeline) chartTimeline.destroy();
 
-        chartTimeline = new Chart(ctx, {
+        destroyChart('timeline');
+        charts.timeline = new Chart(document.getElementById('chartTimeline'), {
             type: 'bar',
             data: {
                 labels: months,
                 datasets: [
-                    {
-                        label: 'Vedtaget',
-                        data: months.map(m => monthly[m].vedtaget),
-                        backgroundColor: '#27ae60',
-                        borderRadius: 4,
-                    },
-                    {
-                        label: 'Forkastet',
-                        data: months.map(m => monthly[m].forkastet),
-                        backgroundColor: '#e74c3c',
-                        borderRadius: 4,
-                    }
+                    { label: 'Vedtaget', data: months.map(m => monthly[m].vedtaget), backgroundColor: '#27ae60', borderRadius: 4 },
+                    { label: 'Forkastet', data: months.map(m => monthly[m].forkastet), backgroundColor: '#e74c3c', borderRadius: 4 }
                 ]
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: { position: 'top' }
+                plugins: { legend: { position: 'top' } },
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderPartiStackedChart() {
+        const parties = getAllParties(filteredVotes);
+        const forData = [], imodData = [], fravData = [];
+
+        parties.forEach(p => {
+            let f=0, i=0, fr=0;
+            filteredVotes.forEach(v => {
+                const c = (v.parti_stemmer||{})[p];
+                if (!c) return;
+                f += c.For||0;
+                i += c.Imod||0;
+                fr += (c['Fraværende']||0) + (c['Hverken for eller imod']||0);
+            });
+            forData.push(f); imodData.push(i); fravData.push(fr);
+        });
+
+        destroyChart('partiStacked');
+        charts.partiStacked = new Chart(document.getElementById('chartPartiStacked'), {
+            type: 'bar',
+            data: {
+                labels: parties,
+                datasets: [
+                    { label: 'For', data: forData, backgroundColor: '#27ae60', borderRadius: 2 },
+                    { label: 'Imod', data: imodData, backgroundColor: '#e74c3c', borderRadius: 2 },
+                    { label: 'Frav./Andet', data: fravData, backgroundColor: '#d5d8dc', borderRadius: 2 },
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' },
+                    tooltip: { callbacks: { title: cs => `${cs[0].label} - ${getPartyName(cs[0].label)}` } }
                 },
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true, beginAtZero: true }
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderTypesChart() {
+        const typeCounts = {};
+        filteredVotes.forEach(v => {
+            const t = v.type || 'Ukendt';
+            typeCounts[t] = (typeCounts[t]||0) + 1;
+        });
+        const labels = Object.keys(typeCounts).sort((a,b) => typeCounts[b]-typeCounts[a]);
+        const colors = ['#3498db','#e74c3c','#27ae60','#f39c12','#9b59b6','#1abc9c','#e67e22','#95a5a6'];
+
+        destroyChart('types');
+        charts.types = new Chart(document.getElementById('chartTypes'), {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{ data: labels.map(l => typeCounts[l]), backgroundColor: colors.slice(0, labels.length) }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'right', labels: { font: { size: 11 } } }
                 }
             }
         });
     }
 
-    // Vote list
-    function renderVoteList() {
-        const container = document.getElementById('voteList');
-        document.getElementById('voteCountLabel').textContent =
-            `Viser ${filteredVotes.length} af ${allVotes.length} afstemninger`;
-
-        if (filteredVotes.length === 0) {
-            container.innerHTML = '<div class="loading">Ingen afstemninger matcher filtrene.</div>';
+    // --- Agreement matrix ---
+    function renderAgreementMatrix() {
+        const parties = getAllParties(filteredVotes);
+        if (parties.length === 0) {
+            document.getElementById('agreementMatrix').innerHTML = '<p>Ingen data.</p>';
             return;
         }
 
-        container.innerHTML = filteredVotes.map((v, idx) => {
-            const ps = v.parti_stemmer || {};
-            let totalFor = 0, totalImod = 0, totalFrav = 0;
-            Object.values(ps).forEach(c => {
-                totalFor += c.For || 0;
-                totalImod += c.Imod || 0;
-                totalFrav += (c['Fraværende'] || 0) + (c['Hverken for eller imod'] || 0);
+        // For each vote, determine each party's majority stance
+        const partyStances = []; // [{partyShort: 'For'|'Imod'|null}, ...]
+        filteredVotes.forEach(v => {
+            const stances = {};
+            Object.entries(v.parti_stemmer||{}).forEach(([p, c]) => {
+                const f = c.For||0, i = c.Imod||0;
+                if (f > i) stances[p] = 'For';
+                else if (i > f) stances[p] = 'Imod';
+                else stances[p] = null; // tie or no clear majority
             });
-            const total = totalFor + totalImod + totalFrav || 1;
-            const pctFor = ((totalFor / total) * 100).toFixed(0);
-            const pctImod = ((totalImod / total) * 100).toFixed(0);
-            const pctFrav = ((totalFrav / total) * 100).toFixed(0);
+            partyStances.push(stances);
+        });
 
-            // Build party table rows
+        // Calculate agreement percentages
+        const agreement = {};
+        parties.forEach(a => {
+            agreement[a] = {};
+            parties.forEach(b => {
+                if (a === b) { agreement[a][b] = 100; return; }
+                let agree = 0, total = 0;
+                partyStances.forEach(s => {
+                    if (s[a] && s[b]) { // both have clear stance
+                        total++;
+                        if (s[a] === s[b]) agree++;
+                    }
+                });
+                agreement[a][b] = total > 0 ? Math.round((agree/total)*100) : 0;
+            });
+        });
+
+        // Render table
+        let html = '<table class="agreement-table"><thead><tr><th></th>';
+        parties.forEach(p => html += `<th title="${escapeHtml(getPartyName(p))}">${escapeHtml(p)}</th>`);
+        html += '</tr></thead><tbody>';
+        parties.forEach(a => {
+            html += `<tr><th title="${escapeHtml(getPartyName(a))}">${escapeHtml(a)}</th>`;
+            parties.forEach(b => {
+                const pct = agreement[a][b];
+                const bg = a===b ? '#e3f2fd' : agreementColor(pct);
+                html += `<td style="background:${bg};font-weight:${pct>=80?700:400}" title="${getPartyName(a)} & ${getPartyName(b)}: ${pct}% enighed">${pct}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table>';
+        document.getElementById('agreementMatrix').innerHTML = html;
+    }
+
+    function agreementColor(pct) {
+        if (pct >= 80) return '#c8e6c9';
+        if (pct >= 60) return '#e8f5e9';
+        if (pct >= 40) return '#fffde7';
+        if (pct >= 20) return '#fff3e0';
+        return '#ffebee';
+    }
+
+    // --- Vote list with pagination ---
+    function renderVoteList() {
+        const container = document.getElementById('voteList');
+        const label = document.getElementById('voteCountLabel');
+        label.textContent = `${filteredVotes.length} afstemninger`;
+
+        if (filteredVotes.length === 0) {
+            container.innerHTML = '<div class="loading">Ingen afstemninger matcher filtrene.</div>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+
+        const totalPages = Math.ceil(filteredVotes.length / PAGE_SIZE);
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage-1) * PAGE_SIZE;
+        const pageVotes = filteredVotes.slice(start, start + PAGE_SIZE);
+
+        label.textContent = `Viser ${start+1}-${start+pageVotes.length} af ${filteredVotes.length}`;
+
+        container.innerHTML = pageVotes.map((v, i) => {
+            const idx = start + i;
+            const ps = v.parti_stemmer || {};
+            let totalFor=0, totalImod=0, totalFrav=0;
+            Object.values(ps).forEach(c => {
+                totalFor += c.For||0;
+                totalImod += c.Imod||0;
+                totalFrav += (c['Fraværende']||0) + (c['Hverken for eller imod']||0);
+            });
+            const total = totalFor+totalImod+totalFrav||1;
+            const pF = ((totalFor/total)*100).toFixed(0);
+            const pI = ((totalImod/total)*100).toFixed(0);
+            const pFr = ((totalFrav/total)*100).toFixed(0);
+
             const parties = Object.keys(ps).sort();
-            const partyRows = parties.map(p => {
+            const rows = parties.map(p => {
                 const c = ps[p];
+                const pFor = c.For||0, pImod = c.Imod||0;
+                const pFrav = (c['Fraværende']||0)+(c['Hverken for eller imod']||0);
+                const pTot = pFor+pImod+pFrav||1;
                 return `<tr>
-                    <td class="party-name">${escapeHtml(p)}</td>
-                    <td class="td-for">${c.For || 0}</td>
-                    <td class="td-imod">${c.Imod || 0}</td>
-                    <td class="td-frav">${(c['Fraværende'] || 0) + (c['Hverken for eller imod'] || 0)}</td>
+                    <td class="party-name" title="${escapeHtml(getPartyName(p))}">${escapeHtml(p)}</td>
+                    <td class="td-for">${pFor}</td>
+                    <td class="td-imod">${pImod}</td>
+                    <td class="td-frav">${pFrav}</td>
+                    <td><div class="party-bar">
+                        <div class="vote-bar-for" style="width:${(pFor/pTot*100).toFixed(0)}%"></div>
+                        <div class="vote-bar-imod" style="width:${(pImod/pTot*100).toFixed(0)}%"></div>
+                        <div class="vote-bar-frav" style="width:${(pFrav/pTot*100).toFixed(0)}%"></div>
+                    </div></td>
                 </tr>`;
             }).join('');
 
             return `
-                <div class="vote-card" onclick="toggleBreakdown(${idx})">
-                    <div class="vote-card-top">
-                        <div class="vote-title">${escapeHtml(v.sag_titel || v.konklusion || 'Ingen titel')}</div>
-                        <div class="vote-meta">
-                            <span class="badge badge-type">${escapeHtml(v.type || '')}</span>
-                            <span class="badge ${v.vedtaget ? 'badge-vedtaget' : 'badge-forkastet'}">
-                                ${v.vedtaget ? 'Vedtaget' : 'Forkastet'}
-                            </span>
-                            <span class="vote-date">${v.dato || ''}</span>
-                        </div>
-                    </div>
-                    <div class="vote-bar">
-                        <div class="vote-bar-for" style="width:${pctFor}%"></div>
-                        <div class="vote-bar-imod" style="width:${pctImod}%"></div>
-                        <div class="vote-bar-frav" style="width:${pctFrav}%"></div>
-                    </div>
-                    <div class="vote-bar-summary">
-                        <span><span class="dot dot-for"></span> For: ${totalFor}</span>
-                        <span><span class="dot dot-imod"></span> Imod: ${totalImod}</span>
-                        <span><span class="dot dot-frav"></span> Fraværende: ${totalFrav}</span>
-                    </div>
-                    <div class="party-breakdown" id="breakdown-${idx}">
-                        <table class="party-table">
-                            <thead>
-                                <tr>
-                                    <th>Parti</th>
-                                    <th>For</th>
-                                    <th>Imod</th>
-                                    <th>Frav./Andet</th>
-                                </tr>
-                            </thead>
-                            <tbody>${partyRows}</tbody>
-                        </table>
+            <div class="vote-card" onclick="toggleBreakdown(${idx})">
+                <div class="vote-card-top">
+                    <div class="vote-title">${escapeHtml(v.sag_titel||v.konklusion||'Ingen titel')}</div>
+                    <div class="vote-meta">
+                        <span class="badge badge-type">${escapeHtml(v.type||'')}</span>
+                        <span class="badge ${v.vedtaget?'badge-vedtaget':'badge-forkastet'}">
+                            ${v.vedtaget?'Vedtaget':'Forkastet'}
+                        </span>
+                        <span class="vote-date">${v.dato||''}</span>
                     </div>
                 </div>
-            `;
+                <div class="vote-bar">
+                    <div class="vote-bar-for" style="width:${pF}%"></div>
+                    <div class="vote-bar-imod" style="width:${pI}%"></div>
+                    <div class="vote-bar-frav" style="width:${pFr}%"></div>
+                </div>
+                <div class="vote-bar-summary">
+                    <span><span class="dot dot-for"></span> For: ${totalFor}</span>
+                    <span><span class="dot dot-imod"></span> Imod: ${totalImod}</span>
+                    <span><span class="dot dot-frav"></span> Frav.: ${totalFrav}</span>
+                </div>
+                <div class="party-breakdown" id="breakdown-${idx}">
+                    <table class="party-table">
+                        <thead><tr><th>Parti</th><th>For</th><th>Imod</th><th>Frav.</th><th></th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            </div>`;
         }).join('');
+
+        // Pagination
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        const container = document.getElementById('pagination');
+        if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+        let html = `<button ${currentPage===1?'disabled':''} onclick="goToPage(${currentPage-1})">&laquo;</button>`;
+
+        // Show max 7 page buttons
+        let startPage = Math.max(1, currentPage - 3);
+        let endPage = Math.min(totalPages, startPage + 6);
+        if (endPage - startPage < 6) startPage = Math.max(1, endPage - 6);
+
+        if (startPage > 1) html += `<button onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) html += `<button disabled>...</button>`;
+
+        for (let p = startPage; p <= endPage; p++) {
+            html += `<button class="${p===currentPage?'active':''}" onclick="goToPage(${p})">${p}</button>`;
+        }
+
+        if (endPage < totalPages-1) html += `<button disabled>...</button>`;
+        if (endPage < totalPages) html += `<button onclick="goToPage(${totalPages})">${totalPages}</button>`;
+
+        html += `<button ${currentPage===totalPages?'disabled':''} onclick="goToPage(${currentPage+1})">&raquo;</button>`;
+        container.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderVoteList();
+        document.getElementById('panel-votes').scrollIntoView({behavior:'smooth'});
     }
 
     function toggleBreakdown(idx) {
         const el = document.getElementById(`breakdown-${idx}`);
         if (el) el.classList.toggle('open');
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                  .replace(/"/g, '&quot;');
     }
 
     // Init
