@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folketingets Afstemninger</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --card: #fff;
+            --text: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border: #e0e4e8;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --yellow: #f39c12;
+            --blue: #3498db;
+            --gray: #95a5a6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #a31621 0%, #7b1017 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        header p {
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* Filters */
+        .filters {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background: white;
+            min-width: 160px;
+        }
+
+        .filter-group button {
+            padding: 0.5rem 1.2rem;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .filter-group button:hover {
+            opacity: 0.9;
+        }
+
+        /* Chart section */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .charts-row { grid-template-columns: 1fr; }
+        }
+
+        .chart-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .chart-card canvas {
+            max-height: 320px;
+        }
+
+        /* Vote list */
+        .vote-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .vote-list-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .vote-count-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .vote-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .vote-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .vote-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .vote-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .vote-meta {
+            display: flex;
+            gap: 0.6rem;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-vedtaget {
+            background: #e8f5e9;
+            color: var(--green);
+        }
+
+        .badge-forkastet {
+            background: #ffebee;
+            color: var(--red);
+        }
+
+        .badge-type {
+            background: #e3f2fd;
+            color: var(--blue);
+        }
+
+        .vote-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Party votes breakdown */
+        .party-breakdown {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .party-breakdown.open {
+            display: block;
+        }
+
+        .party-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .party-table th {
+            text-align: left;
+            padding: 0.4rem 0.6rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .party-table td {
+            padding: 0.4rem 0.6rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .party-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .party-name {
+            font-weight: 600;
+        }
+
+        .td-for { color: var(--green); font-weight: 600; }
+        .td-imod { color: var(--red); font-weight: 600; }
+        .td-frav { color: var(--gray); }
+
+        /* Vote bar */
+        .vote-bar {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        .vote-bar-for {
+            background: var(--green);
+        }
+
+        .vote-bar-imod {
+            background: var(--red);
+        }
+
+        .vote-bar-frav {
+            background: var(--gray);
+        }
+
+        .vote-bar-summary {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            color: var(--text-muted);
+        }
+
+        .vote-bar-summary span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-for { background: var(--green); }
+        .dot-imod { background: var(--red); }
+        .dot-frav { background: var(--gray); }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .info-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .info-banner strong { color: #856404; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        footer a { color: var(--blue); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Folketingets Afstemninger</h1>
+        <p>Afstemningsdata fra Folketinget siden valget 1. november 2022</p>
+    </header>
+
+    <div class="container">
+        <div class="info-banner" id="infoBanner" style="display:none;">
+            <strong>Bemærk:</strong> Denne side viser eksempeldata. Kør <code>python3 fetch_data.py</code>
+            for at hente rigtige data fra Folketingets API.
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="number" id="statTotal">-</div>
+                <div class="label">Afstemninger i alt</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statVedtaget" style="color: var(--green)">-</div>
+                <div class="label">Vedtaget</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statForkastet" style="color: var(--red)">-</div>
+                <div class="label">Forkastet</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statPartier">-</div>
+                <div class="label">Partier</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-group">
+                <label>Parti</label>
+                <select id="filterParti">
+                    <option value="">Alle partier</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Resultat</label>
+                <select id="filterResultat">
+                    <option value="">Alle</option>
+                    <option value="true">Vedtaget</option>
+                    <option value="false">Forkastet</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Type</label>
+                <select id="filterType">
+                    <option value="">Alle typer</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Fra dato</label>
+                <input type="date" id="filterFra" value="2022-11-01">
+            </div>
+            <div class="filter-group">
+                <label>Til dato</label>
+                <input type="date" id="filterTil">
+            </div>
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button onclick="applyFilters()">Filtrer</button>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-row">
+            <div class="chart-card">
+                <h3>For-stemmer per parti (%)</h3>
+                <canvas id="chartPartiFor"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Afstemninger over tid</h3>
+                <canvas id="chartTimeline"></canvas>
+            </div>
+        </div>
+
+        <!-- Vote list -->
+        <div class="vote-list-header">
+            <h2>Afstemninger</h2>
+            <span class="vote-count-label" id="voteCountLabel"></span>
+        </div>
+        <div id="voteList">
+            <div class="loading">Indlæser data...</div>
+        </div>
+    </div>
+
+    <footer>
+        Datakilde: <a href="https://oda.ft.dk/api/" target="_blank">Folketingets Åbne Data (ODA)</a> |
+        Kør <code>python3 fetch_data.py</code> for at opdatere data
+    </footer>
+
+    <script>
+    let allVotes = [];
+    let filteredVotes = [];
+
+    // Party colors
+    const PARTY_COLORS = {
+        'S':   '#c0392b',
+        'V':   '#2980b9',
+        'M':   '#6c3483',
+        'SF':  '#e74c3c',
+        'DD':  '#16a085',
+        'LA':  '#2ecc71',
+        'KF':  '#27ae60',
+        'EL':  '#e67e22',
+        'DF':  '#f1c40f',
+        'NB':  '#1abc9c',
+        'ALT': '#2ecc71',
+        'RV':  '#9b59b6',
+    };
+
+    function getPartyColor(party) {
+        return PARTY_COLORS[party] || '#95a5a6';
+    }
+
+    // Load data
+    async function loadData() {
+        try {
+            const resp = await fetch('data/afstemninger.json');
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            allVotes = await resp.json();
+
+            // Sort by date descending
+            allVotes.sort((a, b) => (b.dato || '').localeCompare(a.dato || ''));
+
+            filteredVotes = [...allVotes];
+            populateFilters();
+            updateStats();
+            renderCharts();
+            renderVoteList();
+
+            // Show info banner if sample data
+            if (allVotes.length > 0 && allVotes.length <= 15) {
+                document.getElementById('infoBanner').style.display = 'block';
+            }
+        } catch (err) {
+            document.getElementById('voteList').innerHTML =
+                `<div class="loading">Kunne ikke indlæse data: ${err.message}<br>
+                 Kør <code>python3 fetch_data.py</code> først.</div>`;
+        }
+    }
+
+    function getAllParties() {
+        const parties = new Set();
+        allVotes.forEach(v => {
+            Object.keys(v.parti_stemmer || {}).forEach(p => parties.add(p));
+        });
+        return [...parties].sort();
+    }
+
+    function populateFilters() {
+        const partiSelect = document.getElementById('filterParti');
+        getAllParties().forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p;
+            opt.textContent = p;
+            partiSelect.appendChild(opt);
+        });
+
+        const typeSelect = document.getElementById('filterType');
+        const types = new Set(allVotes.map(v => v.type).filter(Boolean));
+        [...types].sort().forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            typeSelect.appendChild(opt);
+        });
+
+        // Default til dato to today
+        document.getElementById('filterTil').value = new Date().toISOString().slice(0, 10);
+    }
+
+    function applyFilters() {
+        const parti = document.getElementById('filterParti').value;
+        const resultat = document.getElementById('filterResultat').value;
+        const type = document.getElementById('filterType').value;
+        const fra = document.getElementById('filterFra').value;
+        const til = document.getElementById('filterTil').value;
+
+        filteredVotes = allVotes.filter(v => {
+            if (resultat && String(v.vedtaget) !== resultat) return false;
+            if (type && v.type !== type) return false;
+            if (fra && v.dato < fra) return false;
+            if (til && v.dato > til) return false;
+            if (parti) {
+                const ps = v.parti_stemmer || {};
+                if (!ps[parti]) return false;
+            }
+            return true;
+        });
+
+        updateStats();
+        renderCharts();
+        renderVoteList();
+    }
+
+    function updateStats() {
+        document.getElementById('statTotal').textContent = filteredVotes.length;
+        document.getElementById('statVedtaget').textContent =
+            filteredVotes.filter(v => v.vedtaget).length;
+        document.getElementById('statForkastet').textContent =
+            filteredVotes.filter(v => !v.vedtaget).length;
+
+        const parties = new Set();
+        filteredVotes.forEach(v => {
+            Object.keys(v.parti_stemmer || {}).forEach(p => parties.add(p));
+        });
+        document.getElementById('statPartier').textContent = parties.size;
+    }
+
+    // Charts
+    let chartPartiFor = null;
+    let chartTimeline = null;
+
+    function renderCharts() {
+        renderPartiForChart();
+        renderTimelineChart();
+    }
+
+    function renderPartiForChart() {
+        const parties = getAllParties();
+        const partiTotals = {};
+        const partiForTotals = {};
+
+        filteredVotes.forEach(v => {
+            const ps = v.parti_stemmer || {};
+            Object.entries(ps).forEach(([p, counts]) => {
+                if (!partiTotals[p]) { partiTotals[p] = 0; partiForTotals[p] = 0; }
+                partiTotals[p] += (counts.For || 0) + (counts.Imod || 0) +
+                    (counts['Hverken for eller imod'] || 0);
+                partiForTotals[p] += counts.For || 0;
+            });
+        });
+
+        const sortedParties = parties
+            .filter(p => partiTotals[p] > 0)
+            .sort((a, b) => {
+                const pctA = (partiForTotals[a] / partiTotals[a]) * 100;
+                const pctB = (partiForTotals[b] / partiTotals[b]) * 100;
+                return pctB - pctA;
+            });
+
+        const data = sortedParties.map(p =>
+            Math.round((partiForTotals[p] / partiTotals[p]) * 100)
+        );
+
+        const ctx = document.getElementById('chartPartiFor').getContext('2d');
+        if (chartPartiFor) chartPartiFor.destroy();
+
+        chartPartiFor = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sortedParties,
+                datasets: [{
+                    label: 'For-stemmer %',
+                    data: data,
+                    backgroundColor: sortedParties.map(p => getPartyColor(p)),
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.parsed.y}% for-stemmer`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: v => v + '%' }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderTimelineChart() {
+        // Group by month
+        const monthly = {};
+        filteredVotes.forEach(v => {
+            if (!v.dato) return;
+            const month = v.dato.slice(0, 7); // YYYY-MM
+            if (!monthly[month]) monthly[month] = { vedtaget: 0, forkastet: 0 };
+            if (v.vedtaget) monthly[month].vedtaget++;
+            else monthly[month].forkastet++;
+        });
+
+        const months = Object.keys(monthly).sort();
+        const ctx = document.getElementById('chartTimeline').getContext('2d');
+        if (chartTimeline) chartTimeline.destroy();
+
+        chartTimeline = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Vedtaget',
+                        data: months.map(m => monthly[m].vedtaget),
+                        backgroundColor: '#27ae60',
+                        borderRadius: 4,
+                    },
+                    {
+                        label: 'Forkastet',
+                        data: months.map(m => monthly[m].forkastet),
+                        backgroundColor: '#e74c3c',
+                        borderRadius: 4,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    // Vote list
+    function renderVoteList() {
+        const container = document.getElementById('voteList');
+        document.getElementById('voteCountLabel').textContent =
+            `Viser ${filteredVotes.length} af ${allVotes.length} afstemninger`;
+
+        if (filteredVotes.length === 0) {
+            container.innerHTML = '<div class="loading">Ingen afstemninger matcher filtrene.</div>';
+            return;
+        }
+
+        container.innerHTML = filteredVotes.map((v, idx) => {
+            const ps = v.parti_stemmer || {};
+            let totalFor = 0, totalImod = 0, totalFrav = 0;
+            Object.values(ps).forEach(c => {
+                totalFor += c.For || 0;
+                totalImod += c.Imod || 0;
+                totalFrav += (c['Fraværende'] || 0) + (c['Hverken for eller imod'] || 0);
+            });
+            const total = totalFor + totalImod + totalFrav || 1;
+            const pctFor = ((totalFor / total) * 100).toFixed(0);
+            const pctImod = ((totalImod / total) * 100).toFixed(0);
+            const pctFrav = ((totalFrav / total) * 100).toFixed(0);
+
+            // Build party table rows
+            const parties = Object.keys(ps).sort();
+            const partyRows = parties.map(p => {
+                const c = ps[p];
+                return `<tr>
+                    <td class="party-name">${escapeHtml(p)}</td>
+                    <td class="td-for">${c.For || 0}</td>
+                    <td class="td-imod">${c.Imod || 0}</td>
+                    <td class="td-frav">${(c['Fraværende'] || 0) + (c['Hverken for eller imod'] || 0)}</td>
+                </tr>`;
+            }).join('');
+
+            return `
+                <div class="vote-card" onclick="toggleBreakdown(${idx})">
+                    <div class="vote-card-top">
+                        <div class="vote-title">${escapeHtml(v.sag_titel || v.konklusion || 'Ingen titel')}</div>
+                        <div class="vote-meta">
+                            <span class="badge badge-type">${escapeHtml(v.type || '')}</span>
+                            <span class="badge ${v.vedtaget ? 'badge-vedtaget' : 'badge-forkastet'}">
+                                ${v.vedtaget ? 'Vedtaget' : 'Forkastet'}
+                            </span>
+                            <span class="vote-date">${v.dato || ''}</span>
+                        </div>
+                    </div>
+                    <div class="vote-bar">
+                        <div class="vote-bar-for" style="width:${pctFor}%"></div>
+                        <div class="vote-bar-imod" style="width:${pctImod}%"></div>
+                        <div class="vote-bar-frav" style="width:${pctFrav}%"></div>
+                    </div>
+                    <div class="vote-bar-summary">
+                        <span><span class="dot dot-for"></span> For: ${totalFor}</span>
+                        <span><span class="dot dot-imod"></span> Imod: ${totalImod}</span>
+                        <span><span class="dot dot-frav"></span> Fraværende: ${totalFrav}</span>
+                    </div>
+                    <div class="party-breakdown" id="breakdown-${idx}">
+                        <table class="party-table">
+                            <thead>
+                                <tr>
+                                    <th>Parti</th>
+                                    <th>For</th>
+                                    <th>Imod</th>
+                                    <th>Frav./Andet</th>
+                                </tr>
+                            </thead>
+                            <tbody>${partyRows}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function toggleBreakdown(idx) {
+        const el = document.getElementById(`breakdown-${idx}`);
+        if (el) el.classList.toggle('open');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;');
+    }
+
+    // Init
+    loadData();
+    </script>
+</body>
+</html>
